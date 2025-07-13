@@ -33,6 +33,7 @@
       <input type="email" id="loginEmail" placeholder="Email" required />
       <input type="password" id="loginPassword" placeholder="Password" required />
       <button type="submit" class="btn">Login</button>
+      <p><a href="#" id="forgot-password" style="color: blue;">Forgot Password?</a></p>
       <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
       <p><a href="#" id="forgot-password" style="color: blue;">Forgot Password?</a></p>
     </form>
@@ -72,6 +73,7 @@ const auth = getAuth(app); // ✅ Initialize auth
 
 
     // Login form
+    
     document.getElementById("login-form").addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("loginEmail").value;
