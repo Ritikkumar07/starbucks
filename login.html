@@ -62,9 +62,8 @@
       measurementId: "G-PTRWXZ1J8F"
     };
 
-   // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
     // Login form
     document.getElementById("login-form").addEventListener("submit", (e) => {
