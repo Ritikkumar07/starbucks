@@ -9,110 +9,101 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar">
-  <div class="logo"> <img src="images/Starbucks-Logo.png" alt="Starbucks Logo" style="height: 50px;"></div>
+    <div class="logo">
+      <img src="images/Starbucks-Logo.png" alt="Starbucks Logo" style="height: 50px;">
+    </div>
     <div class="menu-toggle" id="menuToggle">&#9776;</div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="menu.html">Menu</a></li>
-    <li><a href="cart.html">Cart</a></li>
-    <li id="authLinks">
-      <a href="login.html">Login</a>
-      <a href="signup.html">Signup</a>
-    </li>
-    <li id="userEmail" style="display:none; font-weight:bold;"></li>
-    <li><button id="logoutBtn" class="btn" style="display:none;">Logout</button></li>
-  </ul>
-</nav>
-
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li id="authLinks">
+        <a href="login.html">Login</a>
+        <a href="signup.html">Signup</a>
+      </li>
+      <li id="userEmail" style="display:none; font-weight:bold;"></li>
+      <li><button id="logoutBtn" class="btn" style="display:none;">Logout</button></li>
+    </ul>
+  </nav>
 
   <!-- Login Form -->
   <section class="auth-form">
     <h2>Login to Starbucks</h2>
-    <form onsubmit="login(event)">
+    <form id="login-form">
       <input type="email" id="loginEmail" placeholder="Email" required />
       <input type="password" id="loginPassword" placeholder="Password" required />
       <button type="submit" class="btn">Login</button>
       <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
       <p><a href="#" id="forgot-password" style="color: blue;">Forgot Password?</a></p>
-
     </form>
   </section>
 
   <footer style="text-align: center; padding: 15px; background-color: #1e1e1e; color: #fff; font-family: 'Segoe UI', sans-serif;">
-  <p style="margin: 0;">
-    &copy; 2025 
-    <a href="https://myfoli0.netlify.app/" target="_blank" style="font-weight: 600; color: #00ffcc; text-decoration: none;">
-      Ritik
-    </a> • All rights reserved.
-  </p>
-</footer>
-
-
+    <p style="margin: 0;">
+      &copy; 2025 
+      <a href="https://myfoli0.netlify.app/" target="_blank" style="font-weight: 600; color: #00ffcc; text-decoration: none;">
+        Ritik
+      </a> • All rights reserved.
+    </p>
   </footer>
 
+  <!-- Firebase + Auth -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
-    authDomain: "starbucks-ffa6a.firebaseapp.com",
-    projectId: "starbucks-ffa6a",
-    storageBucket: "starbucks-ffa6a.firebasestorage.app",
-    messagingSenderId: "473200407869",
-    appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
-    measurementId: "G-PTRWXZ1J8F"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
+      authDomain: "starbucks-ffa6a.firebaseapp.com",
+      projectId: "starbucks-ffa6a",
+      storageBucket: "starbucks-ffa6a.appspot.com",
+      messagingSenderId: "473200407869",
+      appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
+      measurementId: "G-PTRWXZ1J8F"
+    };
 
-  
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    // Login form
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-  document.querySelector("form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        alert("Login successful!");
-        window.location.href = "index.html";
-      })
-      .catch((error) => {
-        alert("Login Error: " + error.message);
-      });
-  });
-
-  
-  document.getElementById("forgot-password").addEventListener("click", () => {
-    const email = prompt("Enter your email to reset password:");
-    if (email) {
-      sendPasswordResetEmail(auth, email)
+      signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          alert("📧 Password reset email sent. Please check your inbox.");
+          alert("✅ Login successful!");
+          window.location.href = "index.html";
         })
         .catch((error) => {
-          alert("❌ Error: " + error.message);
+          alert("❌ " + error.message);
         });
-    }
-  });
+    });
 
-  
-</script>
+    // Forgot password
+    document.getElementById("forgot-password").addEventListener("click", () => {
+      const email = prompt("Enter your email to reset password:");
+      if (email) {
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            alert("📨 Reset email sent. Please check your inbox.");
+          })
+          .catch((error) => {
+            alert("❌ " + error.message);
+          });
+      }
+    });
+  </script>
 
-<script>
-  const menuToggle = document.getElementById("menuToggle");
-  const navLinks = document.getElementById("navLinks");
+  <!-- Responsive Nav -->
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
 
-  menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-  });
-</script>
-
-
-
-
-
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+  </script>
 </body>
 </html>
