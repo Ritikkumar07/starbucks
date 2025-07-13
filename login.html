@@ -94,18 +94,20 @@ const auth = getAuth(app); // ✅ Initialize auth
     });
 
     // Forgot password
-    document.getElementById("forgot-password").addEventListener("click", () => {
-      const email = prompt("Enter your email to reset password:");
-      if (email) {
-        sendPasswordResetEmail(auth, email)
-          .then(() => {
-            alert("📨 Reset email sent. Please check your inbox.");
-          })
-          .catch((error) => {
-            alert("❌ " + error.message);
-          });
-      }
-    });
+   document.getElementById("forgot-password").addEventListener("click", () => {
+  const email = prompt("Enter your email to reset password:");
+  if (email) {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("📨 Reset email sent. Please check your inbox.");
+      })
+      .catch((error) => {
+        alert("❌ " + error.message);
+        console.error(error);
+      });
+  }
+});
+
   </script>
 
   <!-- Responsive Nav -->
