@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Starbucks - Cart</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+  <a href="menu.html" class="back-btn">← Back to Menu</a>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+  <div class="logo"><img src="images/Starbucks-Logo.png" alt="Starbucks Logo" style="height: 50px;"></div>
+    <div class="menu-toggle" id="menuToggle">&#9776;</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li id="authLinks">
+      <a href="login.html">Login</a>
+      <a href="signup.html">Signup</a>
+    </li>
+    <li id="userEmail" style="display:none; font-weight:bold;"></li>
+    <li><button id="logoutBtn" class="btn" style="display:none;">Logout</button></li>
+  </ul>
+</nav>
+
+
+  <!-- Cart Section -->
+  <section class="cart-section">
+    <h2>Your Cart</h2>
+    <div id="cartItems" class="cart-items"></div>
+    <h3>Total: ₹<span id="cart-total">0</span></h3>
+    <button id="checkout-btn">Proceed to Checkout</button>
+
+    <div class="address-box" style="margin-top: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+  <h3 style="margin-bottom: 10px;">
+    <i class="fas fa-map-marker-alt" style="color: #2d8f3c; margin-right: 8px;"></i>
+    Delivery Address
+  </h3>
+  
+  <textarea id="address-input" rows="3" placeholder="Enter your address..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+  
+  <button id="save-address-btn" style="margin-top: 10px; padding: 8px 15px; background-color: #2d8f3c; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    <i class="fas fa-save" style="margin-right: 6px;"></i>Save Address
+  </button>
+
+  <p id="saved-address" style="margin-top: 15px; font-weight: bold;"></p>
+</div>
+
+   
+
+    <div id="next-step" style="display: none;">
+  <h2>Next Step: Choose Payment Method</h2>
+  <p>Select how you'd like to pay for your order:</p>
+
+  <!-- Address Box -->
+
+
+
+  <div class="payment-options">
+  <label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label><br>
+  <label><input type="radio" name="payment" value="upi"> UPI (Google Pay / PhonePe)</label><br>
+  <label><input type="radio" name="payment" value="card"> Credit / Debit Card</label>
+</div>
+
+<div id="upi-section" style="display: none; margin-top: 15px;">
+  <p><strong>Scan QR or click link to pay (on mobile):</strong></p>
+
+  <!-- ✅ QR Code Image -->
+  <img id="upi-qr" src="" alt="UPI QR Code" width="200" height="200"
+       style="border:1px solid #ccc; border-radius:10px; margin-bottom:10px;" />
+
+  <!-- ✅ Mobile-only UPI Link -->
+  <p id="upi-link-container">
+    <a id="upi-link" href="" target="_blank" style="color: blue; font-weight: bold;">Pay ₹0</a>
+  </p>
+
+  <!-- 🔴 Desktop warning -->
+  <p id="desktopWarning" style="color:red; display:none;">
+    UPI links work only on mobile apps like Google Pay, PhonePe, etc.<br>
+    Please scan the QR code above using your UPI app.
+  </p>
+
+  <p>UPI ID: <strong>7258993306@ybl</strong></p>
+
+  
+</div>
+
+
+
+  <button id="place-order-btn">Place Order</button>
+</div>
+
+  </section>
+  
+>
+  
+</div>
+
+<footer style="text-align: center; padding: 15px; background-color: #1e1e1e; color: #fff; font-family: 'Segoe UI', sans-serif;">
+  <p style="margin: 0;">
+    &copy; 2025 
+    <a href="https://myfoli0.netlify.app/" target="_blank" style="font-weight: 600; color: #00ffcc; text-decoration: none;">
+      Ritik
+    </a> • All rights reserved.
+  </p>
+</footer>
+
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('starbugsCart')) || [];
+
+    function renderCart() {
+      const cartContainer = document.getElementById('cartItems');
+      cartContainer.innerHTML = "";
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty ☹️</p>";
+        document.getElementById('cart-total').textContent = total;
+
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        cartContainer.innerHTML += `
+          <div class="product-card">
+            <h3>${item.name}</h3>
+            <p>Price: ₹${item.price}</p>
+            <button class="btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+      });
+
+      document.getElementById('cart-total').textContent = total;
+
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('starbugsCart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function checkout() {
+      alert("Thanks for your purchase!");
+      localStorage.removeItem('starbugsCart');
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
+    authDomain: "starbucks-ffa6a.firebaseapp.com",
+    projectId: "starbucks-ffa6a",
+    storageBucket: "starbucks-ffa6a.firebasestorage.app",
+    messagingSenderId: "473200407869",
+    appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
+    measurementId: "G-PTRWXZ1J8F"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("Please login to access this page.");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderCart(); // ✅ this ensures total is correct before UPI is selected
+
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const nextStepSection = document.getElementById('next-step');
+
+    checkoutBtn.addEventListener('click', () => {
+      if (nextStepSection) {
+        nextStepSection.style.display = 'block';
+        window.scrollTo({
+          top: nextStepSection.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
+
+    document.querySelectorAll('input[name="payment"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const selected = document.querySelector('input[name="payment"]:checked').value;
+    const upiSection = document.getElementById('upi-section');
+    const upiLink = document.getElementById('upi-link');
+    const upiQr = document.getElementById('upi-qr');
+    const total = parseFloat(document.getElementById('cart-total').textContent);
+    const upiLinkContainer = document.getElementById('upi-link-container');
+    const desktopWarning = document.getElementById('desktopWarning');
+
+
+    if (selected === 'upi') {
+      upiSection.style.display = 'block';
+
+      const isMobile = /android|iphone|ipad/i.test(navigator.userAgent);
+if (isMobile) {
+  upiLinkContainer.style.display = 'block';
+  desktopWarning.style.display = 'none';
+} else {
+  upiLinkContainer.style.display = 'none';
+  desktopWarning.style.display = 'block';
+}
+
+
+      const upiID = "7258993306@ybl";  // Your actual UPI ID
+      const name = "Starbugs";
+      const amount = total.toFixed(2); // Format to 2 decimal places
+      const currency = "INR";
+
+      // Create UPI URL
+      const upiURL = `upi://pay?pa=${upiID}&pn=${name}&am=${amount}&cu=${currency}`;
+
+      // Update UPI link
+      upiLink.href = upiURL;
+      upiLink.textContent = `Pay ₹${amount}`;
+
+      // Generate dynamic QR code using Google Chart API
+      const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiURL)}`;
+upiQr.src = qrURL;
+
+    } else {
+      upiSection.style.display = 'none';
+    }
+  });
+});
+
+
+    placeOrderBtn.addEventListener('click', () => {
+  const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+  const userAddress = document.getElementById('userAddress').value.trim();
+
+  if (userAddress === "") {
+    alert("❌ Please enter your delivery address.");
+    return;
+  }
+
+  // Save address to localStorage if you want
+  localStorage.setItem('userAddress', userAddress);
+
+  alert(`✅ Order placed with ${selectedPayment} method!\n📦 Address: ${userAddress}`);
+  localStorage.removeItem('starbugsCart');
+  window.location.href = 'thankyou.html';
+});
+
+
+  });
+</script>
+
+<script>
+  // Show saved address if exists
+  document.addEventListener("DOMContentLoaded", function () {
+    const savedAddress = localStorage.getItem("userAddress");
+    const addressBox = document.getElementById("saved-address");
+    if (savedAddress && addressBox) {
+      addressBox.textContent = savedAddress;
+    }
+  });
+</script>
+<script>
+  const addressInput = document.getElementById('address-input');
+  const saveAddressBtn = document.getElementById('save-address-btn');
+  const savedAddressText = document.getElementById('saved-address');
+
+  // Load saved address on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedAddress = localStorage.getItem('deliveryAddress');
+    if (savedAddress) {
+      savedAddressText.textContent = `📦 ${savedAddress}`;
+      addressInput.value = savedAddress;
+    }
+  });
+
+  // Save address on button click
+  saveAddressBtn.addEventListener('click', () => {
+    const address = addressInput.value.trim();
+    if (address !== "") {
+      localStorage.setItem('deliveryAddress', address);
+      savedAddressText.textContent = `📦 ${address}`;
+      alert("✅ Address saved successfully!");
+    } else {
+      alert("⚠️ Please enter an address before saving.");
+    }
+  });
+</script>
+
+
+
+
+</body>
+</html>

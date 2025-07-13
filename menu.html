@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Starbucks - Menu</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back to Home</a>
+  <a href="cart.html" class="next-step">Go to Cart →</Cart-></a>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+  <div class="logo"><img src="images/Starbucks-Logo.png" alt="Starbucks Logo" style="height: 50px;"></div></div>
+    <div class="menu-toggle" id="menuToggle">&#9776;</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li id="authLinks">
+      <a href="login.html">Login</a>
+      <a href="signup.html">Signup</a>
+    </li>
+    <li id="userEmail" style="display:none; font-weight:bold;"></li>
+    <li><button id="logoutBtn" class="btn" style="display:none;">Logout</button></li>
+  </ul>
+</nav>
+
+
+  <!-- Menu Section -->
+  <section class="featured">
+    <div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search your favorite drink..." />
+</div>
+
+    <h2>Our Menu</h2>
+    <div class="products">
+      
+      <div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffie 1.png" alt="Caramel Macchiato" />
+  <h3>Caramel Macchiato</h3>
+  <p>₹240</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee.png" alt="Espresso" />
+  <h3>Espresso</h3>
+  <p>₹150</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee 5.png" alt="Cold Brew" />
+  <h3>Cold Brew</h3>
+  <p>₹200</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee 6.png" alt="Strawberry Frappuccino" />
+  <h3>Strawberry Frappuccino</h3>
+  <p>₹260</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+
+ <div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee 9.png" alt="Caramel Macchiato" />
+  <h3>Dalgona Coffee</h3>
+  <p>₹240</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee 8.png" alt="Espresso" />
+  <h3>Layered Iced Lattes </h3>
+  <p>₹150</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+
+  <img src="images/coffee 10.png" alt="Cold Brew" />
+  <h3>Cappuccino </h3>
+  <p>₹200</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+<div class="product-card fade-in" data-category="hot coffee">
+  <img src="images/coffee 12.png" alt="Strawberry Frappuccino" />
+  <h3>Iced Latte</h3>
+  <p>₹260</p>
+  <button class="btn">Add to Cart</button>
+</div>
+
+
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 15px; background-color: #1e1e1e; color: #fff; font-family: 'Segoe UI', sans-serif;">
+  <p style="margin: 0;">
+    &copy; 2025 
+    <a href="https://myfoli0.netlify.app/" target="_blank" style="font-weight: 600; color: #00ffcc; text-decoration: none;">
+      Ritik
+    </a> • All rights reserved.
+  </p>
+</footer>
+
+
+  </footer>
+  <script>
+  const buttons = document.querySelectorAll('.product-card .btn');
+  
+   const products = [
+  { name: "Caramel Macchiato", price: 240 },
+  { name: "Espresso", price: 150 },
+  { name: "Cold Brew", price: 200 },
+  { name: "Strawberry Frappuccino", price: 260 },
+  { name: "Dalgona Coffee", price: 240 },
+  { name: "Layered Iced Lattes", price: 150 },
+  { name: "Cappuccino", price: 200 },
+  { name: "Iced Latte", price: 260 }
+];
+
+
+  buttons.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      let cart = JSON.parse(localStorage.getItem('starbugsCart')) || [];
+      cart.push(products[i]);
+      localStorage.setItem('starbugsCart', JSON.stringify(cart));
+      alert(`${products[i].name} added to cart!`);
+    });
+  });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
+    authDomain: "starbucks-ffa6a.firebaseapp.com",
+    projectId: "starbucks-ffa6a",
+    storageBucket: "starbucks-ffa6a.firebasestorage.app",
+    messagingSenderId: "473200407869",
+    appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
+    measurementId: "G-PTRWXZ1J8F"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("Please login to access this page.");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const productCards = document.querySelectorAll(".product-card");
+
+  searchInput.addEventListener("keyup", () => {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    productCards.forEach(card => {
+      const title = card.querySelector("h3").textContent.toLowerCase();
+      if (title.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script>
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+</script>
+
+
+<script>
+  const fadeElements = document.querySelectorAll('.fade-in');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  fadeElements.forEach(el => observer.observe(el));
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Starbucks - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#008248" />
+<link rel="icon" href="images/logo-192.png" />
+
+
+</head>
+<body>
+  <!-- Navbar -->
+ <nav class="navbar">
+  <div class="logo"><img src="images/Starbucks-Logo.png" alt="Starbucks Logo" style="height: 50px;"></div>
+    <div class="menu-toggle" id="menuToggle">&#9776;</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li id="authLinks">
+      <li class="auth-link"><a href="login.html">Login</a></li>
+<li class="auth-link"><a href="signup.html">Signup</a></li>
+
+    </li>
+    <li id="userEmail" style="display:none; font-weight:bold;"></li>
+    <li><button id="logoutBtn" class="btn" style="display:none;">Logout</button></li>
+  </ul>
+</nav>
+
+
+  <!-- Banner -->
+  <header class="banner">
+    <div class="banner-text">
+      <h1>Welcome to Starbucks</h1>
+      <p>Brewing freshness, one cup at a time.</p>
+      <a href="menu.html" class="btn">Explore Menu</a>
+    </div>
+  </header>
+
+  <!-- Featured Section -->
+  <section class="featured">
+    <h2>Featured Drinks</h2>
+    <div class="products">
+      <div class="product-card">
+        <img src="images/coffie 1.png" alt="Latte" />
+        <h3>Caramel Latte</h3>
+        <p>₹180</p>
+      </div>
+      <div class="product-card">
+        <img src="images/coffie 2.png" alt="Frappuccino" />
+        <h3>Mocha Frappuccino</h3>
+        <p>₹220</p>
+      </div>
+      <div class="product-card">
+        <img src="images/coffie 3.png" alt="Iced Tea" />
+        <h3>Peach Iced Tea</h3>
+        <p>₹150</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 15px; background-color: #1e1e1e; color: #fff; font-family: 'Segoe UI', sans-serif;">
+  <p style="margin: 0;">
+    &copy; 2025 
+    <a href="https://myfoli0.netlify.app/" target="_blank" style="font-weight: 600; color: #00ffcc; text-decoration: none;">
+      Ritik
+    </a> • All rights reserved.
+  </p>
+</footer>
+
+
+  </footer>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
+    authDomain: "starbucks-ffa6a.firebaseapp.com",
+    projectId: "starbucks-ffa6a",
+    storageBucket: "starbucks-ffa6a.firebasestorage.app",
+    messagingSenderId: "473200407869",
+    appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
+    measurementId: "G-PTRWXZ1J8F"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const authLinks = document.getElementById("authLinks");
+  const userEmail = document.getElementById("userEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Logged in
+      authLinks.style.display = "none";
+      userEmail.style.display = "inline-block";
+      logoutBtn.style.display = "inline-block";
+      userEmail.textContent = user.email;
+    } else {
+      // Logged out
+      authLinks.style.display = "inline-block";
+      userEmail.style.display = "none";
+      logoutBtn.style.display = "none";
+    }
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    signOut(auth).then(() => {
+      alert("Logged out");
+      window.location.href = "index.html";
+    });
+  });
+</script>
+
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+</script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then((reg) => console.log("Service Worker Registered!", reg))
+      .catch((err) => console.log("Service Worker failed:", err));
+  }
+</script>
+
+
+
+</body>
+</html>
