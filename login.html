@@ -49,21 +49,27 @@
 
   <!-- Firebase + Auth -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
-      authDomain: "starbucks-ffa6a.firebaseapp.com",
-      projectId: "starbucks-ffa6a",
-      storageBucket: "starbucks-ffa6a.appspot.com",
-      messagingSenderId: "473200407869",
-      appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
-      measurementId: "G-PTRWXZ1J8F"
-    };
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBIrEwrvgn2cXxjZ3Hj3BcdjD48SFYcprs",
+  authDomain: "starbucks-ffa6a.firebaseapp.com",
+  projectId: "starbucks-ffa6a",
+  storageBucket: "starbucks-ffa6a.firebasestorage.app",
+  messagingSenderId: "473200407869",
+  appId: "1:473200407869:web:eba25e0dc7b7ba953ac154",
+  measurementId: "G-PTRWXZ1J8F"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
     // Login form
     document.getElementById("login-form").addEventListener("submit", (e) => {
